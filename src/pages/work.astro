@@ -1,0 +1,89 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Animation from "../components/Animation.astro";
+
+---
+<script>
+    // @ts-ignore
+    import { gsap } from "gsap";
+    // @ts-ignore
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.to(".c", {
+    scrollTrigger: {
+        trigger: ".boxc",
+        start: "20% 40%",
+        end: "40% 45%",
+        scrub: true,
+        markers:true,
+        toggleActions: "restart pause reverse pause"
+    },
+    x: 400,
+    rotation: 360,
+    duration: 3
+});
+</script>
+
+<Layout title="Welcome to Astro.">
+<div class="content-grid">
+    <div class="breakout">content breakout</div>
+    <div class="box a">content a</div>
+    <div class="box b">content b</div>
+    <div class="boxc"><div class="c">content c</div></div>
+</div>
+
+
+
+
+
+</Layout>
+
+<style>
+.content-grid,
+.full-width{
+    --padding-inline: 2rem;
+    --content-max-width: 70ch;
+    --breakout-max-width: 85ch;
+
+    --breakout-size: calc((var(--breakout-max-width) - var(--content-max-width)) / 2);
+
+
+    display: grid;
+    grid-template-columns: 
+    [full-width-start] minmax(var(--padding-inline), 1fr) 
+    [breakout-start] minmax(0, var(--breakout-size)) 
+    [content-start] min(100% - (var(--padding-inline) * 2), var(--content-max-width)) [content-end] 
+    minmax(0, var(--breakout-size)) [breakout-end] 
+    minmax(var(--padding-inline), 1fr) [full-width-end];
+}
+
+.content-grid > :not(.breakout, .full-width),
+.full-width > :not(.breakout, .full-width) {
+    grid-column: content;
+}
+.content-grid > .breakout {
+    grid-column: breakout;
+}
+.content-grid > .full-width {
+    grid-column: full-width;
+}
+html{
+    color: aliceblue;
+}
+section{
+    background-color: red;
+}
+.box{
+    height: 900px;
+}
+.boxc{
+    height: 900px;
+}
+
+.c{
+    background: red;
+    width: 100px;
+    height: 100px;
+}
+</style>
